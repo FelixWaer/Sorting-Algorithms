@@ -1,6 +1,8 @@
 #include <iostream>
+#include <vector>
 
 #define PRINT(X) std::cout << (X) << std::endl
+#define CLEAR_CONSOLE std::cout << "\033c"
 
 void swap_Elements(int& elementA, int& elementB)
 {
@@ -39,23 +41,45 @@ void quickSorting(int array[], int start, int end)
 	quickSorting(array, partitionIndex + 1, end);
 }
 
+void print_Array(int array[], int arraySize)
+{
+	for (int i = 0; i < arraySize; i++)
+	{
+		std::cout << array[i] << " ";
+	}
+	PRINT(" ");
+}
+
 int main() {
-	int constexpr  size = 12;
-	int array[size] = {2, 5, 1, 5, 8, 7, 6, 6, 3, 10, 3, 6};
+	int arraySize = 10;
+	int theArray[10];
 
-	for (int i = 0; i < size; i++)
+	int b = 0;
+	while (true)
 	{
-		std::cout << array[i] << " ";
+		std::cin >> std::ws;
+		int c = std::cin.peek();
+		if (std::isdigit(c) || c=='-')
+		{
+			if (b == arraySize)
+			{
+				break;
+			}
+			std::cin >> theArray[b];
+			b++;
+			CLEAR_CONSOLE;
+		}
+		else
+		{
+			break;
+		}
 	}
-	PRINT(" ");
 
-	quickSorting(array, 0, size-1);
+	print_Array(theArray, arraySize);
 
-	for (int i = 0; i < size; i++)
-	{
-		std::cout << array[i] << " ";
-	}
-	PRINT(" ");
+	quickSorting(theArray, 0, arraySize-1);
+
+	print_Array(theArray, arraySize);
 
 	return 1;
 }
