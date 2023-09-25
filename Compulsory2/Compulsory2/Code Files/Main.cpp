@@ -2,103 +2,11 @@
 #include <vector>
 #include <chrono>
 
+#include "FlexTimer.h"
+#include "Sorting_Algorithms.h"
+
 #define PRINT(X) std::cout << (X) << std::endl
 #define CLEAR_CONSOLE std::cout << "\033c"
-#define TIME(x) x = std::chrono::high_resolution_clock::now()
-#define PRINT_TIME_MS(text, start, end) std::cout << text << std::chrono::duration_cast<std::chrono::nanoseconds>((end) - (start)).count() << " ns" << std::endl
-
-class Timer
-{
-public:
-	Timer()
-	{
-	
-	}
-
-	~Timer()
-	{
-	
-	}
-private:
-	
-};
-
-void swap_Elements(int& elementA, int& elementB)
-{
-	int tempNumber = elementA;
-	elementA = elementB;
-	elementB = tempNumber;
-}
-
-
-int partition_Array(int array[], int start, int end)
-{
-	int const pivot = array[end];
-	int leftElementIndex = start;
-
-	for (int i = start; i <= end; i++)
-	{
-		if (array[i] < pivot)
-		{
-			swap_Elements(array[i], array[leftElementIndex]);
-			leftElementIndex++;
-		}
-	}
-	swap_Elements(array[leftElementIndex], array[end]);
-
-	return leftElementIndex;
-}
-
-void quickSorting(int array[], int start, int end)
-{
-	if (start > end)
-	{
-		return;
-	}
-
-	int const partitionIndex = partition_Array(array, start, end);
-	quickSorting(array, start, partitionIndex - 1);
-	quickSorting(array, partitionIndex + 1, end);
-}
-
-int partition_Array(std::vector<int>& vector, int start, int end)
-{
-	int const pivot = vector[end];
-	int leftElementIndex = start;
-
-	for (int i = start; i <= end; i++)
-	{
-		if (vector[i] < pivot)
-		{
-			swap_Elements(vector[i], vector[leftElementIndex]);
-			leftElementIndex++;
-		}
-	}
-	swap_Elements(vector[leftElementIndex], vector[end]);
-
-	return leftElementIndex;
-}
-
-void quickSorting(std::vector<int>& vector, int start, int end)
-{
-	if (start > end)
-	{
-		return;
-	}
-
-	int const partitionIndex = partition_Array(vector, start, end);
-	quickSorting(vector, start, partitionIndex - 1);
-	quickSorting(vector, partitionIndex + 1, end);
-}
-
-void print_Array(int array[], int arraySize)
-{
-	for (int i = 0; i < arraySize; i++)
-	{
-		std::cout << array[i] << " ";
-	}
-	PRINT(" ");
-}
 
 void splitting_Array(int array[], int start, int mid, int end)
 {
@@ -138,35 +46,45 @@ void mergeSort(int array[], int start, int end)
 
 int main() {
 	std::vector<int> vectorThatIsGonnaBeSorted;
-
+	
 	int arraySizeChoice = 0;
 	while (true)
 	{
+		PRINT("How many elements do you want to sort?");
 		std::cin >> std::ws;
 		int c = std::cin.peek();
 		if (std::isdigit(c))
 		{
+			srand(time(NULL));
 			std::cin >> arraySizeChoice;
-			for (size_t i = 0; i < arraySizeChoice; i++)
+			for (int i = 0; i < arraySizeChoice; i++)
 			{
-				
+				vectorThatIsGonnaBeSorted.push_back(rand());
 			}
 			CLEAR_CONSOLE;
+			break;
 		}
 		else
 		{
-			break;
+			std::string word;
+			std::cin >> word;
+			if (c == 'e' || c == 'E')
+			{
+				break;
+			}
 		}
 	}
 
-	print_Array(theArray, arraySize);
+	Timer timer;
+	timer.start_Timer();
+	quickSorting(vectorThatIsGonnaBeSorted, 0, vectorThatIsGonnaBeSorted.size() - 1);
+	timer.stop_Timer();
+	std::cout << "time in seconds: " << timer.TimeResult_InSeconds() << std::endl;
+	std::cout << "time in milliseconds: " << timer.TimeResult_InMilliseconds() << std::endl;
 
-	TIME(auto startTime);
-	quickSorting(theArray, 0, arraySize-1);
-	TIME(auto endTime);
-	PRINT_TIME_MS("time to sort array: ", startTime, endTime);
-
-	print_Array(theArray, arraySize);
+	std::cout << "you sorted " << arraySizeChoice << " amount of random numbers";
+	int a = 0;
+	std::cin >> a;
 
 	return 1;
 }

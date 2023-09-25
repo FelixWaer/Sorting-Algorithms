@@ -20,6 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code Files\Main.cpp" />
+    <ClCompile Include="Code Files\Sorting_Algorithms.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code Files\FlexTimer.h" />
+    <ClInclude Include="Code Files\Sorting_Algorithms.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
