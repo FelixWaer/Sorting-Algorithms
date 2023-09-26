@@ -8,83 +8,94 @@
 #define PRINT(X) std::cout << (X) << std::endl
 #define CLEAR_CONSOLE std::cout << "\033c"
 
-void splitting_Array(int array[], int start, int mid, int end)
-{
-	int subArrayOneSize = mid - start + 1;
-	int subArrayTwoSize = end - mid;
-
-	int* subArrayOne = new int[subArrayOneSize];
-	int* subArrayTwo = new int[subArrayTwoSize];
-
-	for (int i = 0; i < subArrayOneSize; i++)
-	{
-		subArrayOne[i] = array[start + i];
-	}
-	for (int i = 0; i < subArrayTwoSize; i++)
-	{
-		subArrayTwo[i] = array[mid + 1 + i];
-	}
-
-
-	delete[] subArrayOne;
-	delete[] subArrayTwo;
-
-}
-void mergeSort(int array[], int start, int end)
-{
-	if (start >= end)
-	{
-		return;
-	}
-
-	int const mid = start + (end - start) / 2;
-
-	mergeSort(array, start, mid);
-	mergeSort(array, mid + 1, end);
-	splitting_Array(array, start, mid, end);
-}
-
 int main() {
-	std::vector<int> vectorThatIsGonnaBeSorted;
-	
+	std::vector<int> sortingVector;
+	Timer timer;
+
 	int arraySizeChoice = 0;
+	int sortingAlgorithmChoice = 0;
 	while (true)
 	{
 		PRINT("How many elements do you want to sort?");
 		std::cin >> std::ws;
-		int c = std::cin.peek();
-		if (std::isdigit(c))
+		int peek = std::cin.peek();
+		if (std::isdigit(peek))
 		{
 			srand(time(NULL));
 			std::cin >> arraySizeChoice;
 			for (int i = 0; i < arraySizeChoice; i++)
 			{
-				vectorThatIsGonnaBeSorted.push_back(rand());
+				sortingVector.push_back(rand());
 			}
 			CLEAR_CONSOLE;
-			break;
 		}
 		else
 		{
 			std::string word;
 			std::cin >> word;
-			if (c == 'e' || c == 'E')
+			CLEAR_CONSOLE;
+			continue;
+		}
+
+		while (true)
+		{
+			PRINT("Press 1 for quick sort");
+			PRINT("Press 2 for merge sort");
+			PRINT("Press 3 for cocktail sort");
+			std::cin >> std::ws;
+			peek = std::cin.peek();
+			if (std::isdigit(peek))
 			{
+				std::cin >> sortingAlgorithmChoice;
+				timer.start_Timer();
+				switch (sortingAlgorithmChoice)
+				{
+				case 1:
+					{
+					quickSorting(sortingVector, 0, sortingVector.size() - 1);
+					break;
+					}
+				case 2:
+					{
+					mergeSorting(sortingVector, 0, sortingVector.size() - 1);
+					break;
+					}
+				case 3:
+					{
+					cocktailSorting(sortingVector);
+					break;
+					}
+				default:
+					{
+					continue;
+					}
+				}
+				timer.stop_Timer();
 				break;
 			}
+			else
+			{
+				std::string word;
+				std::cin >> word;
+				CLEAR_CONSOLE;
+			}
 		}
+		CLEAR_CONSOLE;
+		std::cout << "time in seconds: " << timer.TimeResult_InSeconds() << std::endl;
+		std::cout << "time in milliseconds: " << timer.TimeResult_InMilliseconds() << std::endl;
+		std::cout << "you sorted " << arraySizeChoice << " amount of random numbers";
+
+		PRINT("do you want to continue sorting?");
+		PRINT("yes/no");
+		std::string answer;
+		std::cin >> answer;
+		if (answer != "yes")
+		{
+			break;
+		}
+		sortingVector.clear();
+		CLEAR_CONSOLE;
 	}
-
-	Timer timer;
-	timer.start_Timer();
-	quickSorting(vectorThatIsGonnaBeSorted, 0, vectorThatIsGonnaBeSorted.size() - 1);
-	timer.stop_Timer();
-	std::cout << "time in seconds: " << timer.TimeResult_InSeconds() << std::endl;
-	std::cout << "time in milliseconds: " << timer.TimeResult_InMilliseconds() << std::endl;
-
-	std::cout << "you sorted " << arraySizeChoice << " amount of random numbers";
-	int a = 0;
-	std::cin >> a;
 
 	return 1;
 }

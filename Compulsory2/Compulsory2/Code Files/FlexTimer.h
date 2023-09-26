@@ -52,4 +52,5 @@ private:
 	std::chrono::duration<float> duration;
 
 	bool autoTimerActive;
+
 };
